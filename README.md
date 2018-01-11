@@ -4,8 +4,8 @@ This repository is implementation of style transfer part from the paper [Percept
 
 
 <div align='center'>
-  <img src='static/input/dp_17.jpg' height="200px">
-  <img src='static/style/udnie.jpg' height="200px">
+  <img src='static/input/dp_17.jpg' height="225px">
+  <img src='static/style/udnie.jpg' height="225px">
   <img src='static/output/dp_15.jpg' height="350px">
 </div>
 

@@ -1,0 +1,197 @@
+ <html>
+<head>
+    <title>Style</title>
+<style>
+	body{
+		
+		background-color: #1abc9c;
+	}
+	.upper-box{
+		margin-top: 4%;
+		margin-left: 20%;
+		margin-right: 20%;
+	}
+	.style{
+		height: 300px;
+		width: 300px;
+		margin: auto;
+	}
+	.content{
+
+		height: 300px;
+		width: 300px;
+		margin: auto;
+	}
+	.hide{
+		display: none;
+	}
+	.generated-image{
+		
+		margin-top: 18%;
+		margin-left: 31%;
+
+	}
+	.header{
+		font-family: 'Tangerine', serif;
+		margin-top: 2%;
+		text-align: center;
+		font-size: 52px;
+	}
+	.title{
+		text-align: center;
+		font-family: 'Amaranth', sans-serif;
+	}
+
+	.box-shadow{
+		border: 2px solid;
+		box-shadow:  0 -15px 15px -5px #2c3e50;
+	}
+
+</style>
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Amaranth">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<h1 class="header">Style Transfer</h1>
+  <div class="upper-box">
+	  <div style="float: left;" class="content">
+	  		<h3 class="title">Content Image</h3>
+			<img src="/static/input/content.jpg" height="300" alt="Image preview..." style="overflow: hidden; height: 300px; width: 300px;" class="content-image box-shadow">
+			<br><br>
+			<form method="POST" id="upload-file" enctype="multipart/form-data">
+				<input name="file" type="file" onchange="previewFile()" style="width: 75%;">
+				<button id="upload-file-btn" type="button" style="float: right;">Upload</button>
+			</form>
+
+	  </div>
+	  <div style="float: right;" class="style">
+			
+			<h3 class="title">Style Image</h3>
+			<img src="/static/style/la_muse.jpg" height="300" alt="Image preview..." style="overflow: hidden; height: 300px; width: 300px;"class="style-image box-shadow">
+			<br><span style="float: left; margin-top: 6%;" onclick="prev()" class="prev hide"><button>Prev</button></span>
+			<span style="float: right; margin-top: 6%;" onclick="next()" class="next"><button>Next</button></span>
+  	  </div>
+
+  	  <div class="lower-box">
+  	  	  <img src="" height="300" alt="Generated preview..." style="overflow: hidden; height: 300px; width: 300px;" class="generated-image hide box-shadow">
+  	  </div>
+  </div>
+  
+<script>
+
+	var i = 0;
+	var check;
+	content_src = "";
+    String.prototype.replaceAt=function(index, replacement) {
+    return this.substr(0, index) + replacement+ this.substr(index + replacement.length);
+	}
+
+    function next(){
+   		i = i+1;
+   		style_list = ['la_muse.jpg', 'rain_princess.jpg', 'the_scream.jpg', 'the_shipwreck_of_the_minotaur.jpg', 'udnie.jpg', 'wave.jpg']
+   		var src = $('.style-image').attr('src');
+   		var base_new_src = '/static/style/';
+   		var new_src = base_new_src + style_list[i];
+   		
+   		$(".style-image").attr("src",new_src);
+   		if(i==style_list.length-1){
+   			$(".next").addClass("hide");
+   		}
+
+   		if(i==0){
+   			$(".prev").addClass("hide");
+   		}
+   		if (i>0 && i<style_list.length-1){
+   			$(".next").removeClass("hide");
+   			$(".prev").removeClass("hide");
+   		}
+
+    }
+
+    function prev(){
+
+   	    i = i-1;
+   		style_list = ['la_muse.jpg', 'rain_princess.jpg', 'the_scream.jpg', 'the_shipwreck_of_the_minotaur.jpg', 'udnie.jpg', 'wave.jpg']
+   		var src = $('.style-image').attr('src');
+   		var base_new_src = "{{url_for('static', filename='style/')}}";
+   		var new_src = base_new_src + style_list[i];
+   		
+   		$(".style-image").attr("src",new_src);
+
+   		if(i==style_list.length-1){
+   			$(".next").addClass("hide");
+   		}
+
+   		if(i==0){
+   			$(".prev").addClass("hide");
+   		}
+   		if (i>0 && i<style_list.length-1){
+   			$(".next").removeClass("hide");
+   			$(".prev").removeClass("hide");
+   		}
+    }
+
+
+    function previewFile(){
+       check = true;
+       var preview = document.querySelector('img'); 
+       var file    = document.querySelector('input[type=file]').files[0]; 
+       var reader  = new FileReader();
+       
+
+       reader.onloadend = function () {
+           preview.src = reader.result;
+           content_src = reader.result;
+       }
+
+       if (file) {
+           reader.readAsDataURL(file); 
+       } else {
+           preview.src = "";
+       }
+    }
+
+	$(function() {
+
+
+
+		style_list = ['la_muse.jpg', 'rain_princess.jpg', 'the_scream.jpg', 'the_shipwreck_of_the_minotaur.jpg', 'udnie.jpg', 'wave.jpg']
+
+	    $('#upload-file-btn').click(function() {
+
+	    	if(!check){
+	    		alert("Upload Image!!!")
+	    	}
+
+	        var form_data = new FormData($('#upload-file')[0]);
+	        form_data.append("style", style_list[i]);
+	        $.ajax({
+	            type: 'POST',
+	            url: '/uploadajax',
+	            data: form_data,
+	            contentType: false,
+	            cache: false,
+	            processData: false,
+	            async: true,
+	            success: function(data) {
+	                
+	                
+	                data = data.split('/');
+	                len = data.length;
+	                data = data[len-1];
+	                //console.log('output/'+data);
+	                
+	                src="{{url_for('static', filename='')}}";
+	                //console.log("src: ",src+'output/'+data);
+	                $(".generated-image").removeClass("hide");
+	                $(".generated-image").attr("src",src+'output/'+data);
+
+	            },
+	        });
+	    });
+	});
+
+  </script>
+</body>
+</html>

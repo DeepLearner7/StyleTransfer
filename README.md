@@ -10,7 +10,7 @@ This repository is implementation of style transfer part from the paper [Percept
 </div>
 
 
-##Getting Started
+
 
 ### Prerequisites
 

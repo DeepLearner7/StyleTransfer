@@ -1,8 +1,5 @@
 # StyleTransfer
-This repository is implementation of style transfer part from the paper [Perceptual Losses for Real-Time Style Transfer and Super-Resolution
-](https://arxiv.org/abs/1603.08155).
-
-The model architecture also contains [Adaptive Instance Normalization](https://arxiv.org/abs/1703.06868)
+This repository is implementation of style transfer part from the paper <a href="https://arxiv.org/abs/1603.08155">Perceptual Losses for Real-Time Style Transfer and Super-Resolution</a>. The model architecture also contains <a href="https://arxiv.org/abs/1703.06868">Adaptive Instance Normalization</a> technique after each convolution layer.
 
 
 <div align='center'>
